@@ -178,10 +178,7 @@ docker run -d --name mysql-new -e MYSQL_ROOT_PASSWORD=root -v mysql-data:/var/li
 ## 🎯 What's Next?
 Now that you understand Docker Storage, move on to Part 3: Docker Networking to learn how containers communicate with each other.
 
-
----
 Happy Learning! Keep Dockerizing! 🐳
-
 
 ---
 

@@ -133,8 +133,6 @@ docker logs <container_id>
 ## 🎯 What's Next?
 Now that you understand Docker Fundamentals, move on to Part 2: Docker Storage & Volumes to learn how to persist your container data.
 
----
-
 Happy Learning! Keep Dockerizing! 🐳
 
 ---
