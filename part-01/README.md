@@ -45,6 +45,50 @@ A **Dockerfile** is a text document that contains all the commands a user could 
 *   **Workflow:** 
     `Dockerfile` ➔ `Build Image` ➔ `Run Container` ➔ `Container Terminal`
 
+```dockerfile
+# ----------------------------
+# Stage 1: Build Stage
+# ----------------------------
+FROM maven:3.8.4-openjdk-17 AS build
+
+WORKDIR /app
+
+# Copy the pom.xml and download dependencies (for caching)
+COPY pom.xml .
+RUN mvn dependency:go-offline
+
+# Copy the source code
+COPY src ./src
+
+# Build the application (skip tests to speed up)
+RUN mvn clean package -DskipTests
+
+# ----------------------------
+# Stage 2: Runtime Stage
+# ----------------------------
+FROM openjdk:17-jdk-alpine
+
+# Set working directory
+WORKDIR /app
+
+# Copy the JAR file from the build stage
+COPY --from=build /app/target/*.jar app.jar
+
+# Create a non-root user
+RUN addgroup -S spring && adduser -S spring -G spring
+USER spring:spring
+
+# Expose port 8080
+EXPOSE 8080
+
+# Environment variables (can be overridden at runtime)
+ENV SPRING_PROFILES_ACTIVE=prod
+
+# Run the application
+ENTRYPOINT ["java", "-jar", "app.jar"]
+```
+
+
 ---
 
 ## 4. Dockerfile Instructions (Deep Dive)
